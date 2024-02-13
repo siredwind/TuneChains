@@ -1,11 +1,11 @@
 <div align="center">
   <img src="https://gateway.pinata.cloud/ipfs/QmSdQdscB6CDGKPznDB9Xn1e4CyuKn2eHGwn4jgJwvedLW" />
   <h3>
-    TuneChains Repository
+    TuneChains Crowdfunding Platform
   </h3>
 </div>
 
-⚡️ Web3 application with Bento Grids styling that is allowing musicians to create campaigns to promote their creations and raise funds from fans.
+⚡️ Web3 application with Bento Grids styling that allows artists to create funding campaigns in order promote their art and raise funds from fans. The artists are able to reference their social media links to promote their stuff even better!
 
 Built using **Solidity**, **ReactJS*, **RainbowKit**, **Wagmi**, **Redux**, **Ethers**.
 
