@@ -16,7 +16,12 @@ Bento Grid is the new design trend which is composed from modular boxes and it i
 
 👉 Learn more about Bento Grid designs: https://bentogrids.com
 
-![TuneChains Example]("https://gateway.pinata.cloud/ipfs/QmQ8Sq6Eq9xtQBr6FrC6MTRT2TWvX7pTyuLQrjMPLPTcRb")
+<div align="center">
+  <img src="https://gateway.pinata.cloud/ipfs/QmQ8Sq6Eq9xtQBr6FrC6MTRT2TWvX7pTyuLQrjMPLPTcRb" />
+  <h3> 
+    TuneChains Crowfunding Platform Preview
+  </h3>
+</div>
 
 ##
 
@@ -48,7 +53,7 @@ This project requires a number of keys from Pinata to be defined in `.env`. The 
 npm run start
 ```
 
-### Start the node locally
+### Start the hardhat blockchain locally
 ```
 npx hardhat node
 ```
