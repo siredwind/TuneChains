@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://imgur.com/gallery/3ICInCu" />
+  <img src="https://gateway.pinata.cloud/ipfs/QmSdQdscB6CDGKPznDB9Xn1e4CyuKn2eHGwn4jgJwvedLW" />
   <h3>
     TuneChains Repository
   </h3>
@@ -16,7 +16,7 @@ Bento Grid is the new design trend which is composed from modular boxes and it i
 
 👉 Learn more about Bento Grid designs: https://bentogrids.com
 
-![TuneChains Example](https://imgur.com/gallery/mLZdcpN)
+![TuneChains Example]("https://gateway.pinata.cloud/ipfs/QmQ8Sq6Eq9xtQBr6FrC6MTRT2TWvX7pTyuLQrjMPLPTcRb")
 
 ##
 
