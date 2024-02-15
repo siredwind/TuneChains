@@ -19,7 +19,7 @@ Bento Grid is the new design trend which is composed from modular boxes and it i
 <div align="center">
   <img src="https://gateway.pinata.cloud/ipfs/QmQ8Sq6Eq9xtQBr6FrC6MTRT2TWvX7pTyuLQrjMPLPTcRb" />
   <h3> 
-    TuneChains Crowfunding Platform Preview
+    TuneChains Crowdfunding Platform Preview
   </h3>
 </div>
 
