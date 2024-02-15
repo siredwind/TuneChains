@@ -23,11 +23,11 @@ Bento Grid is the new design trend which is composed from modular boxes and it i
   </h3>
 </div>
 
-## Check Website
+## 👉 Check Website
 
 <p align="center">
   <a href="https://tune-chains-b5rdfawb6-siredwinds-projects.vercel.app/">
-    <img src="https://vercel.com/button" alt="Deploy with Vercel"/>
+    <img src="https://vercel.com/button" alt="Go to Vercel"/>
   </a>
 </p>
 
