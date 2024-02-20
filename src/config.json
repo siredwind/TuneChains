@@ -6,5 +6,13 @@
     "mc": {
       "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
     }
+  },
+  "80001": {
+    "token": {
+      "address": "0x874BEca71eeE63447dc4080908385df338c2e723"
+    },
+    "mc": {
+      "address": "0xEEd485157DAE99b4c9FEeaE86c9f499C7a9E67FA"
+    }
   }
 }

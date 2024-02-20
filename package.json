@@ -58,16 +58,32 @@
     ]
   },
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^1.0.2",
+    "@ethersproject/providers": "^5.7.2",
+    "@nomicfoundation/hardhat-chai-matchers": "^1.0.6",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.10",
+    "@nomicfoundation/hardhat-toolbox": "^2.0.2",
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "@nomiclabs/hardhat-etherscan": "^3.1.8",
+    "@typechain/ethers-v5": "^10.2.1",
+    "@typechain/hardhat": "^6.1.6",
+    "@types/chai": "^4.3.11",
+    "@types/mocha": "^10.0.6",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "autoprefixer": "^10.4.16",
+    "chai": "^4.4.1",
+    "dotenv": "^16.4.5",
     "eslint": "^8.45.0",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
-    "hardhat": "^2.10.1",
+    "ethers": "^5.7.2",
+    "hardhat": "^2.14.1",
+    "hardhat-gas-reporter": "^1.0.10",
     "postcss": "^8.4.32",
-    "tailwindcss": "^3.4.0"
+    "solidity-coverage": "^0.8.7",
+    "tailwindcss": "^3.4.0",
+    "ts-node": "^10.9.2",
+    "typechain": "^8.3.2"
   }
 }
