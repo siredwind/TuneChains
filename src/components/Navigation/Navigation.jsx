@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectToken } from '../../store/selectors';
 import { loadAccount, loadBalance } from '../../store/interactions';
 
-const Navigation = () => {
+const Navigation = ({ show }) => {
   const token = useSelector(selectToken);
 
   const dispatch = useDispatch();
@@ -29,6 +29,9 @@ const Navigation = () => {
     if (token)
       connectHandler();
   }, [token])
+
+  // Conditional rendering based on the `show` prop
+  if (!show) return null;
 
   return (
     <FadeIn>
