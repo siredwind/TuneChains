@@ -5,9 +5,9 @@ export const mc = createSlice({
     name: 'mc',
     initialState: {
         contract: null,
-        activeCampaignCount: 0,
+        activeCampaignCount: null,
         campaigns: [],
-        campaignCount: 0,
+        campaignCount: null,
         socialLinks: [],
         creating: {
             isLoading: false,
@@ -104,10 +104,10 @@ export const mc = createSlice({
                 // Assuming the amount is in wei and needs to be converted to ether
                 const newAmount = ethers.utils.parseUnits(amount.toString(), 'wei');
                 const existingAmount = ethers.utils.parseUnits(state.campaigns[campaignIndex][6].toString(), 'wei');
-
+                
                 // Use BigNumber addition
                 const updatedAmount = newAmount.add(existingAmount);
-
+                
                 // Convert back to a readable format if necessary
                 state.campaigns[campaignIndex][6] = ethers.utils.formatUnits(updatedAmount, 'wei');
             }
@@ -146,7 +146,7 @@ export const mc = createSlice({
             state.activeCampaignCount = parseInt(state.activeCampaignCount) - 1;
 
             // remove campaign from campaigns
-            state.campaigns = state.campaigns.filter(campaign => 
+            state.campaigns = state.campaigns.filter(campaign =>
                 parseInt(campaign[0]) !== parseInt(action.payload.campaignId)
             );
         },

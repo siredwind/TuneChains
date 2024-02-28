@@ -6,7 +6,7 @@ const News = ({ activeCampaigns }) => {
         <span className="text-[#8a8a93]">Hello There!</span>
         </h3>
         <h3 className="max-md:text-[32px] max-md:leading-10 max-md:tracking-[-0.01em]">
-            There are <span className="text-[#8a8a93]"> &nbsp; {activeCampaigns || 0} &nbsp; </span> active campaigns.
+            There are <span className="text-[#8a8a93]"> &nbsp; {activeCampaigns || "X"} &nbsp; </span> active campaigns.
         </h3>
     </div>
 }

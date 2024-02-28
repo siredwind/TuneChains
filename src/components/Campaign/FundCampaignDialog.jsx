@@ -1,15 +1,11 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-// Redux
-import { useDispatch, useSelector } from 'react-redux';
-
-// Store
-import { selectMC, selectProvider, selectToken } from '../../store/selectors';
-import { fundCampaign } from '../../store/interactions';
+// Components
+import LoadingDialog from './LoadingDialog';
 
 // Utils
-import { tokens } from '../../utils/helpers';
+import useFundCampaign from '../../utils/hooks/useFundCampaign';
 
 const modalOverlayStyle = {
     position: 'fixed',
@@ -45,13 +41,10 @@ const inputStyle = {
 
 const FundCampaignDialog = ({ campaignId, isOpen, onClose }) => {
     const [amount, setAmount] = useState('1');
+
     const modalRef = useRef();
 
-    const dispatch = useDispatch();
-
-    const provider = useSelector(selectProvider);
-    const mc = useSelector(selectMC);
-    const token = useSelector(selectToken);
+    const { fundCampaign, isLoading } = useFundCampaign();
 
     const handleClose = useCallback(
         (e) => {
@@ -76,19 +69,10 @@ const FundCampaignDialog = ({ campaignId, isOpen, onClose }) => {
     const handleFormSubmit = async (e) => {
         // Prevent the default form submission action
         e.preventDefault();
-
-        // Fund campaign
-        fundCampaign(
-            provider,
-            mc,
-            token,
-            campaignId,
-            tokens(amount),
-            dispatch
-        );
-
         // Close the modal
         onClose();
+        // Call fund campaign
+        await fundCampaign(campaignId, amount);
     };
 
     const handleChange = (e) => {
@@ -96,28 +80,40 @@ const FundCampaignDialog = ({ campaignId, isOpen, onClose }) => {
         setAmount(newAmount);
     };
 
-    return isOpen ? (
-        <div style={modalOverlayStyle} ref={modalRef} onClick={handleClose}>
-            <div style={modalStyle} onClick={(e) => e.stopPropagation()}>
-                <form>
-                    <label style={{ display: 'block', marginBottom: '5px' }}>
-                        Amount (DAPP): <input
-                            style={inputStyle}
-                            type="number"
-                            value={amount}
-                            onChange={handleChange}
-                        />
-                    </label>
-                    <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-12"
-                        onClick={handleFormSubmit}
+    return (
+        <>
+            {isOpen && (
+                <div
+                    style={modalOverlayStyle}
+                    ref={modalRef}
+                    onClick={handleClose}
+                >
+                    <div
+                        style={modalStyle}
+                        onClick={(e) => e.stopPropagation()}
                     >
-                        Fund Artist's Campaign
-                    </button>
-                </form>
-            </div>
-        </div >
-    ) : null;
+                        <form>
+                            <label style={{ display: 'block', marginBottom: '5px' }}>
+                                Amount (DAPP): <input
+                                    style={inputStyle}
+                                    type="number"
+                                    value={amount}
+                                    onChange={handleChange}
+                                />
+                            </label>
+                            <button
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-12"
+                                onClick={handleFormSubmit}
+                            >
+                                Fund Artist's Campaign
+                            </button>
+                        </form>
+                    </div>
+                </div >
+            )}
+            {isLoading && <LoadingDialog />}
+        </>
+    )
 };
 
 FundCampaignDialog.propTypes = {

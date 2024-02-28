@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import PropTypes from 'prop-types';
 
 // Images
 import MusicCampaignIcon from "../../assets/music-campaign.png";
@@ -12,7 +13,7 @@ import useFetchVideoUrl from "../../utils/hooks/useFetchVideoUrl";
 import { useDispatch, useSelector } from 'react-redux';
 
 // Store
-import { selectMC, selectProvider, selectToken } from '../../store/selectors';
+import { selectMC, selectProvider } from '../../store/selectors';
 import { closeCampaign } from "../../store/interactions";
 
 const CampaignDetails = ({ campaign, handleClick = () => { } }) => {
@@ -23,9 +24,10 @@ const CampaignDetails = ({ campaign, handleClick = () => { } }) => {
 
     const fundsRaisedPercentage = useMemo(() => {
         const currentPercentage = parseInt(campaign.raised) / parseInt(campaign.goal) * 100;
-        if (currentPercentage > 100)
+        const fixedPercentage = parseFloat(currentPercentage.toFixed(2));
+        if (fixedPercentage > 100)
             return 100;
-        else return currentPercentage;
+        else return fixedPercentage;
     }, [campaign.raised, campaign.goal]);
 
     const {
@@ -96,5 +98,10 @@ const CampaignDetails = ({ campaign, handleClick = () => { } }) => {
         </div>
     )
 }
+
+CampaignDetails.propTypes = {
+    campaign: PropTypes.object.isRequired,
+    handleClick: PropTypes.func.isRequired
+};
 
 export default CampaignDetails;

@@ -17,7 +17,7 @@ import {
 
 const Home = () => {
   const activeCampaignsCount = useSelector(selectActiveCampaignCount);
-  const campaignsDetails = useSelector(campaignSelector) || [];
+  const campaignsDetails = useSelector(campaignSelector);
 
   return (
     <Container id="home">
@@ -26,11 +26,15 @@ const Home = () => {
         <News activeCampaigns={parseInt(activeCampaignsCount)} />
 
         <div className="flex flex-col items-center my-2">
-          {campaignsDetails.map(campaign =>
-            <Campaign
-              campaign={campaign}
-              key={campaign.id}
-            />)}
+          {campaignsDetails
+            ? campaignsDetails.map(campaign =>
+              <Campaign
+                campaign={campaign}
+                key={campaign.id}
+              />)
+            : <div>
+              Loading Campaigns ...
+            </div>}
         </div>
       </FadeIn>
     </Container>
