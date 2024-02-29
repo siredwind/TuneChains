@@ -223,7 +223,7 @@ export const updateSocialLinks = async (
         );
         await transaction.wait();
 
-        dispatch(updateSuccess(transaction.hash));
+        dispatch(updateSuccess({ transactionHash: transaction.hash }));
     } catch (error) {
         dispatch(updateFail(error.message));
     }

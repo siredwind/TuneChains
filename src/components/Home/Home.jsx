@@ -1,10 +1,11 @@
 import React from "react";
 
 // Components
+import BlockSpinner from "../common/Effects/BlockSpinner/BlockSpinner";
 import Container from "../Container";
 import Campaign from "../Campaign";
-import News from "../News";
 import FadeIn from "../common/Effects/FadeIn/FadeIn";
+import News from "../News";
 
 // Redux 
 import { useSelector } from "react-redux";
@@ -32,8 +33,8 @@ const Home = () => {
                 campaign={campaign}
                 key={campaign.id}
               />)
-            : <div>
-              Loading Campaigns ...
+            : <div className="flex flex-col bg-[#131315] w-100 h-32 px-12 py-10 rounded-3xl my-2 text-white justify-center items-center">
+              <BlockSpinner size={32} />
             </div>}
         </div>
       </FadeIn>

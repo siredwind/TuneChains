@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import BlockSpinner from '../common/Effects/BlockSpinner/BlockSpinner';
 
 const LoadingDialogOverlayStyle = {
     position: 'fixed',
@@ -15,44 +15,13 @@ const LoadingDialogOverlayStyle = {
     zIndex: 1050, // Ensure it's above other content
 };
 
-// Chain block style
-const blockStyle = {
-    width: '16px',
-    height: '16px',
-    backgroundColor: '#3498db',
-    margin: '2px',
-};
-
-const spinnerVariants = {
-    animate: {
-        rotate: 360,
-        transition: {
-            duration: 1,
-            ease: "linear",
-            repeat: Infinity,
-        },
-    },
-};
-
 const LoadingDialog = () => (
     <div style={LoadingDialogOverlayStyle}>
-        <motion.div
-            animate="animate"
-            variants={spinnerVariants}
-            style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}
-        >
-            {/* Create a "chain" of blocks */}
-            <div style={blockStyle}></div>
-            <div style={blockStyle}></div>
-            <div style={blockStyle}></div>
-            <div style={blockStyle}></div>
-            {/* You can add more blocks or adjust the styling to your liking */}
-        </motion.div>
-        <p className="text-white mt-5">Processing...</p>
+        <BlockSpinner size={30} />
+
+        <p className="text-white mt-5">
+            Processing...
+        </p>
     </div>
 );
 

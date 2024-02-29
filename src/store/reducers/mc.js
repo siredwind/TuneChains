@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ethers } from "ethers";
+import {
+    defaultRequestState,
+    handleFulfilled,
+    handlePending,
+    handleRejected
+} from "../utils";
 
 export const mc = createSlice({
     name: 'mc',
@@ -9,26 +15,10 @@ export const mc = createSlice({
         campaigns: [],
         campaignCount: null,
         socialLinks: [],
-        creating: {
-            isLoading: false,
-            isSuccess: false,
-            transactionHash: null
-        },
-        updating: {
-            isLoading: false,
-            isSuccess: false,
-            transactionHash: null
-        },
-        funding: {
-            isLoading: false,
-            isSuccess: false,
-            transactionHash: null
-        },
-        closing: {
-            isLoading: false,
-            isSuccess: false,
-            transactionHash: null
-        }
+        creating: { ...defaultRequestState },
+        updating: { ...defaultRequestState },
+        funding: { ...defaultRequestState },
+        closing: { ...defaultRequestState }
     },
     reducers: {
         setContract: (state, action) => {
@@ -47,14 +37,10 @@ export const mc = createSlice({
             state.socialLinks = action.payload;
         },
         createRequest: (state) => {
-            state.creating.isLoading = true;
-            state.creating.isSuccess = false;
-            state.creating.transactionHash = null;
+            handlePending(state);
         },
         createSuccess: (state, action) => {
-            state.creating.isLoading = false;
-            state.creating.isSuccess = true;
-            state.creating.transactionHash = action.payload.transactionHash;
+            handleFulfilled(state, action);
 
             const campaignId = parseInt(state.campaignCount) + 1;
             const campaign = action.payload.campaign;
@@ -81,20 +67,14 @@ export const mc = createSlice({
             ]
         },
         createFail: (state) => {
-            state.creating.isLoading = false;
-            state.creating.isSuccess = false;
-            state.creating.transactionHash = null;
+            handleRejected(state);
         },
         fundRequest: (state) => {
-            state.funding.isLoading = true;
-            state.funding.isSuccess = false;
-            state.funding.transactionHash = null;
+            handlePending(state);
         },
         fundSuccess: (state, action) => {
-            const { transactionHash, campaignId, amount } = action.payload;
-            state.funding.isLoading = false;
-            state.funding.isSuccess = true;
-            state.funding.transactionHash = transactionHash;
+            handleFulfilled(state, action);
+            const { campaignId, amount } = action.payload;
 
             // Find the campaign and update its raised amount
             const campaignIndex = state.campaigns
@@ -104,43 +84,31 @@ export const mc = createSlice({
                 // Assuming the amount is in wei and needs to be converted to ether
                 const newAmount = ethers.utils.parseUnits(amount.toString(), 'wei');
                 const existingAmount = ethers.utils.parseUnits(state.campaigns[campaignIndex][6].toString(), 'wei');
-                
+
                 // Use BigNumber addition
                 const updatedAmount = newAmount.add(existingAmount);
-                
+
                 // Convert back to a readable format if necessary
                 state.campaigns[campaignIndex][6] = ethers.utils.formatUnits(updatedAmount, 'wei');
             }
         },
         fundFail: (state) => {
-            state.funding.isLoading = false;
-            state.funding.isSuccess = false;
-            state.funding.transactionHash = null;
+            handleRejected(state);
         },
         updateRequest: (state) => {
-            state.updating.isLoading = true;
-            state.updating.isSuccess = false;
-            state.updating.transactionHash = null;
+            handlePending(state);
         },
         updateSuccess: (state, action) => {
-            state.updating.isLoading = false;
-            state.updating.isSuccess = true;
-            state.updating.transactionHash = action.payload;
+            handleFulfilled(state, action);
         },
         updateFail: (state) => {
-            state.updating.isLoading = false;
-            state.updating.isSuccess = false;
-            state.updating.transactionHash = null;
+            handleRejected(state);
         },
         closeRequest: (state) => {
-            state.closing.isLoading = true;
-            state.closing.isSuccess = false;
-            state.closing.transactionHash = null;
+            handlePending(state);
         },
         closeSuccess: (state, action) => {
-            state.closing.isLoading = false;
-            state.closing.isSuccess = true;
-            state.closing.transactionHash = action.payload.transactionHash;
+            handleFulfilled(state, action);
 
             // remove one campaign from active campaigns
             state.activeCampaignCount = parseInt(state.activeCampaignCount) - 1;
@@ -151,9 +119,7 @@ export const mc = createSlice({
             );
         },
         closeFail: (state) => {
-            state.closing.isLoading = false;
-            state.closing.isSuccess = false;
-            state.closing.transactionHash = null;
+            handleRejected(state);
         }
     }
 })
