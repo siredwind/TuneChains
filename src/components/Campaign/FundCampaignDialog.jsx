@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 // Components
-import LoadingDialog from './LoadingDialog';
+import LoadingDialog from '../LoadingDialog';
 
 // Utils
 import useFundCampaign from '../../utils/hooks/useFundCampaign';
@@ -111,6 +111,7 @@ const FundCampaignDialog = ({ campaignId, isOpen, onClose }) => {
                     </div>
                 </div >
             )}
+
             {isLoading && <LoadingDialog />}
         </>
     )

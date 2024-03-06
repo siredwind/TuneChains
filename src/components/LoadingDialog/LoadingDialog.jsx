@@ -12,15 +12,15 @@ const LoadingDialogOverlayStyle = {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: 1050, // Ensure it's above other content
+    zIndex: 1050
 };
 
-const LoadingDialog = () => (
+const LoadingDialog = ({ text }) => (
     <div style={LoadingDialogOverlayStyle}>
         <BlockSpinner size={30} />
 
         <p className="text-white mt-5">
-            Processing...
+            {text} ...
         </p>
     </div>
 );
