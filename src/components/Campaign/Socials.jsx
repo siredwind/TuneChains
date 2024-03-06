@@ -5,7 +5,7 @@ import styled from "styled-components";
 // Icons
 import Facebook from "../../assets/facebook.svg";
 import Youtube from "../../assets/youtube.svg";
-import Twitter from "../../assets/twitter.svg";
+import Twitter from "../../assets/x.svg";
 import Github from "../../assets/github.svg";
 import Instagram from "../../assets/instagram.svg";
 import Tiktok from "../../assets/tiktok.svg";
