@@ -28,7 +28,7 @@ const Home = () => {
 
         {campaignsDetails
           ? <Campaigns campaignsDetails={campaignsDetails} />
-          : <LoadingDialog />
+          : <LoadingDialog text={"Loading data"} />
         }
 
       </FadeIn>

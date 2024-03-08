@@ -4,14 +4,14 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // Store 
-import { createCampaign, updateSocialLinks } from '../../store/interactions';
+import { createCampaign as createCampaignAction, updateSocialLinks } from '../../store/interactions';
 import { selectCampaignCount, selectMC, selectProvider } from '../../store/selectors';
 
 // Utils
 import { pinFileToIPFS, generateMetadata } from '../helpers/ipfsUtils';
 import { tokens } from '../helpers';
 
-const useCampaignCreate = () => {
+const useCreateCampaign = () => {
     const dispatch = useDispatch();
 
     const [isLoading, setIsLoading] = useState(false);
@@ -22,7 +22,7 @@ const useCampaignCreate = () => {
     const provider = useSelector(selectProvider);
     const mc = useSelector(selectMC);
 
-    const createCampaignCall = async ({ formData, socialLinks }) => {
+    const createCampaign = async ({ formData, socialLinks }) => {
         try {
             setIsLoading(true);
             setSuccessMessage('');
@@ -44,7 +44,7 @@ const useCampaignCreate = () => {
                 const metadataHash = await pinFileToIPFS(file, `${newCampaignId}.json`, newCampaignId);
 
                 // Step 4: Create Campaign
-                await createCampaign(
+                const tx = await createCampaignAction(
                     provider,
                     mc,
                     campaignData.title,
@@ -55,7 +55,9 @@ const useCampaignCreate = () => {
                     dispatch
                 );
 
-                setSuccessMessage(`Campaign ${campaignData.title} was created with ID ${newCampaignId}!`);
+                tx
+                    ? setSuccessMessage(`Campaign ${campaignData.title} was created with ID ${newCampaignId}!`)
+                    : setErrorMessage(`Transaction rejected!`);
 
                 // Step 5: If social links update social links on blockchain
                 const hasSocialLinks = Object.values(socialLinks).some(link => link !== '');
@@ -85,7 +87,7 @@ const useCampaignCreate = () => {
         }
     }
 
-    return { createCampaignCall, isLoading, successMessage, errorMessage };
+    return { createCampaign, isLoading, successMessage, errorMessage };
 }
 
-export default useCampaignCreate;
+export default useCreateCampaign;

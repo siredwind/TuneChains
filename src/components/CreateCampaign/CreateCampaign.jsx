@@ -11,7 +11,7 @@ import {
   InitCampaignData,
   InitSocialLinks
 } from "../../utils/constants";
-import useCampaignCreate from "../../utils/hooks/useCampaignCreate";
+import useCreateCampaign from "../../utils/hooks/useCreateCampaign";
 
 const CreateCampaign = () => {
   const [formData, setFormData] = useState({ ...InitCampaignData });
@@ -19,11 +19,11 @@ const CreateCampaign = () => {
   const [showSocialLinks, setShowSocialLinks] = useState(false);
 
   const {
-    createCampaignCall,
+    createCampaign,
     isLoading,
     successMessage,
     errorMessage
-  } = useCampaignCreate();
+  } = useCreateCampaign();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,10 +53,7 @@ const CreateCampaign = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await createCampaignCall({
-      formData,
-      socialLinks
-    });
+    await createCampaign({ formData, socialLinks });
   };
 
   return (

@@ -1,6 +1,9 @@
 import React, { useMemo } from "react";
 import PropTypes from 'prop-types';
 
+// Components
+import LoadingDialog from "../LoadingDialog";
+
 // Images
 import MusicCampaignIcon from "../../assets/music-campaign.png";
 import CommentIcon from "../../assets/comment.png";
@@ -8,19 +11,10 @@ import EtherIcon from "../../assets/ether.png";
 
 // Hooks
 import useFetchVideoUrl from "../../utils/hooks/useFetchVideoUrl";
-
-// Redux
-import { useDispatch, useSelector } from 'react-redux';
-
-// Store
-import { selectMC, selectProvider } from '../../store/selectors';
-import { closeCampaign } from "../../store/interactions";
+import useCloseCampaign from "../../utils/hooks/useCloseCampaign";
 
 const CampaignDetails = ({ campaign, handleClick = () => { } }) => {
-    const dispatch = useDispatch();
-
-    const provider = useSelector(selectProvider);
-    const mc = useSelector(selectMC);
+    const { closeCampaign, isLoading } = useCloseCampaign();
 
     const fundsRaisedPercentage = useMemo(() => {
         const currentPercentage = parseInt(campaign.raised) / parseInt(campaign.goal) * 100;
@@ -30,38 +24,23 @@ const CampaignDetails = ({ campaign, handleClick = () => { } }) => {
         else return fixedPercentage;
     }, [campaign.raised, campaign.goal]);
 
-    const {
-        videoUrl,
-        videoIsLoading,
-        videoError
-    } = useFetchVideoUrl(campaign);
+    const { videoUrl } = useFetchVideoUrl(campaign);
 
     const handleCloseCampaign = async () => {
         // Close Campaign
-        closeCampaign(
-            provider,
-            mc,
-            campaign.id,
-            dispatch
-        );
+        await closeCampaign(campaign.id);
     };
 
     return (
         <div className="flex flex-col w-3/4 bg-[#131315] px-12 py-10 rounded-3xl my-2">
             {
-                videoError || videoIsLoading
-                    ? <img
-                        src={MusicCampaignIcon}
-                        alt="Fallback"
-                        className="w-full rounded-xl"
-                        style={{ filter: 'brightness(0) invert(1)', backgroundColor: 'transparent' }}
-                    />
-                    : <video
-                        src={videoUrl}
-                        className="w-full rounded-xl"
-                        style={{ backgroundColor: 'transparent' }}
-                        controls
-                    />
+                <video
+                    src={videoUrl}
+                    alt={MusicCampaignIcon}
+                    className="w-full rounded-xl"
+                    style={{ backgroundColor: 'transparent' }}
+                    controls
+                />
             }
 
             <h2 className="text-white text-xl font-bold text-left m-2">{campaign.title}</h2>
@@ -95,6 +74,8 @@ const CampaignDetails = ({ campaign, handleClick = () => { } }) => {
                     </span>
                 </div>
             </div>
+
+            {isLoading && <LoadingDialog text={"Closing campaign"} />}
         </div>
     )
 }

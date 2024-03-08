@@ -98,7 +98,18 @@ export const loadCampaigns = async (mc, dispatch) => {
         let campaigns = [];
         for (let id = 1; id <= campaignCount; id++) {
             const campaignDetail = await mc.getCampaignDetails(id);
-            campaigns.push(campaignDetail);
+            const campaign = {
+                id: parseInt(campaignDetail[0]._hex, 16),
+                musician: campaignDetail[1],
+                title: campaignDetail[2],
+                description: campaignDetail[3],
+                url: campaignDetail[4],
+                goal: ethers.utils.formatEther(campaignDetail[5]) || 0,
+                raised: ethers.utils.formatEther(campaignDetail[6]) || 0,
+                deadline: new Date((campaignDetail[7]).toString() * 1000).toLocaleString(),
+                closed: campaignDetail[8],
+            };
+            campaigns.push(campaign);
         }
         dispatch(campaignsLoaded(campaigns));
 
@@ -141,8 +152,11 @@ export const createCampaign = async (provider, mc, title, description, url, goal
                 deadline: deadline
             }
         }));
+
+        return transaction.hash;
     } catch (error) {
         dispatch(createFail(error.message));
+        return null;
     }
 }
 

@@ -112,7 +112,7 @@ const FundCampaignDialog = ({ campaignId, isOpen, onClose }) => {
                 </div >
             )}
 
-            {isLoading && <LoadingDialog />}
+            {isLoading && <LoadingDialog text={"Processing transaction"}/>}
         </>
     )
 };

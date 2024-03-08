@@ -29,6 +29,7 @@ export const mc = createSlice({
         },
         campaignsLoaded: (state, action) => {
             state.campaigns = action.payload;
+            console.log(action.payload, "@@@@@campaignsLoaded")
         },
         campaignCountLoaded: (state, action) => {
             state.campaignCount = action.payload;
@@ -53,18 +54,22 @@ export const mc = createSlice({
             // Add one more campaign to campaigns
             state.campaignCount = campaignId;
 
+            // Calculate the deadline date by adding the duration (in days) to the current date
+            const deadlineDate = new Date();
+            deadlineDate.setDate(deadlineDate.getDate() + parseInt(campaign.deadline));
+
             // Add campaign to campaigns
-            state.campaigns[campaignId] = [
-                campaignId,
-                campaign.musician,
-                campaign.title,
-                campaign.description,
-                campaign.url,
-                goal,
-                raised,
-                campaign.deadline,
-                false,
-            ]
+            state.campaigns.push({
+                id: campaignId,
+                musician: campaign.musician,
+                title: campaign.title,
+                description: campaign.description,
+                url: campaign.url,
+                goal: ethers.utils.formatEther(campaign.goal),
+                raised: "0",
+                deadline: deadlineDate.toLocaleString(),
+                closed: false,
+            })
         },
         createFail: (state) => {
             handleRejected(state);
@@ -78,18 +83,20 @@ export const mc = createSlice({
 
             // Find the campaign and update its raised amount
             const campaignIndex = state.campaigns
-                .findIndex(c => parseInt(c[0]) === parseInt(campaignId));
+                .findIndex(c => parseInt(c.id) === parseInt(campaignId));
 
             if (campaignIndex !== -1) {
-                // Assuming the amount is in wei and needs to be converted to ether
-                const newAmount = ethers.utils.parseUnits(amount.toString(), 'wei');
-                const existingAmount = ethers.utils.parseUnits(state.campaigns[campaignIndex][6].toString(), 'wei');
+                // Assuming the incoming amount is already in wei
+                const newAmount = ethers.BigNumber.from(amount.toString());
 
-                // Use BigNumber addition
-                const updatedAmount = newAmount.add(existingAmount);
+                // Assuming existingAmount is stored in ether and converting it to wei for the calculation
+                const existingAmount = ethers.utils.parseUnits(state.campaigns[campaignIndex].raised, 'ether');
 
-                // Convert back to a readable format if necessary
-                state.campaigns[campaignIndex][6] = ethers.utils.formatUnits(updatedAmount, 'wei');
+                // BigNumber addition
+                const updatedAmount = existingAmount.add(newAmount);
+
+                // Update the campaign, converting the updated amount back to ether for consistency
+                state.campaigns[campaignIndex].raised = ethers.utils.formatUnits(updatedAmount, 'ether');
             }
         },
         fundFail: (state) => {
@@ -109,14 +116,14 @@ export const mc = createSlice({
         },
         closeSuccess: (state, action) => {
             handleFulfilled(state, action);
+            const { campaignId } = action.payload;
 
-            // remove one campaign from active campaigns
-            state.activeCampaignCount = parseInt(state.activeCampaignCount) - 1;
-
-            // remove campaign from campaigns
-            state.campaigns = state.campaigns.filter(campaign =>
-                parseInt(campaign[0]) !== parseInt(action.payload.campaignId)
-            );
+            // Update the campaign's closed status and decrement activeCampaignCount
+            const campaign = state.campaigns.find(c => c.id === campaignId);
+            if (campaign) {
+                campaign.closed = true;
+                state.activeCampaignCount -= 1;
+            }
         },
         closeFail: (state) => {
             handleRejected(state);
