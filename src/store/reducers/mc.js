@@ -29,7 +29,6 @@ export const mc = createSlice({
         },
         campaignsLoaded: (state, action) => {
             state.campaigns = action.payload;
-            console.log(action.payload, "@@@@@campaignsLoaded")
         },
         campaignCountLoaded: (state, action) => {
             state.campaignCount = action.payload;
