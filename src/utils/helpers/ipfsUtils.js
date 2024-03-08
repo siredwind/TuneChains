@@ -2,8 +2,12 @@ import axios from 'axios';
 import { MetadataTemplate, IPFS_TAG } from "../constants";
 
 export const fetchMetadataFromIPFS = async (metadataUrl) => {
+    const url = metadataUrl.includes(process.env.REACT_APP_PINATA_GATEWAY)
+        ? metadataUrl.replace(process.env.REACT_APP_PINATA_GATEWAY, process.env.REACT_APP_PINATA_PIRANHA)
+        : metadataUrl;
+
     try {
-        const response = await axios.get(metadataUrl);
+        const response = await axios.get(url);
         if (response.status !== 200) {
             throw new Error(`Failed to fetch metadata: Status code ${response.status}`);
         }
@@ -16,7 +20,7 @@ export const fetchMetadataFromIPFS = async (metadataUrl) => {
             videoHash = response.data.video;
         }
 
-        return `${process.env.REACT_APP_PINATA_GATEWAY}/${videoHash}`;
+        return `${process.env.REACT_APP_PINATA_PIRANHA}/${videoHash}`;
     }
     catch (error) {
         console.error('Error fetching metadata from IPFS:', error);

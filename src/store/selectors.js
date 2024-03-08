@@ -1,5 +1,4 @@
 import { createSelector } from "reselect";
-import { ethers } from "ethers";
 
 export const selectProvider = state => state.provider.connection;
 export const selectChainId = state => state.provider?.chainId;

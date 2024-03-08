@@ -44,8 +44,6 @@ export const mc = createSlice({
 
             const campaignId = parseInt(state.campaignCount) + 1;
             const campaign = action.payload.campaign;
-            const goal = ethers.utils.parseUnits(campaign.goal.toString(), 'wei');
-            const raised = ethers.utils.parseUnits('0', 'wei');
 
             // Add one more campaign to active campaigns
             state.activeCampaignCount = parseInt(state.activeCampaignCount) + 1;

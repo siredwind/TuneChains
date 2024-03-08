@@ -28,6 +28,7 @@ const Navigation = ({ show }) => {
   useEffect(() => {
     if (token)
       connectHandler();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token])
 
   // Conditional rendering based on the `show` prop

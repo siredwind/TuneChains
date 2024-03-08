@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import LoadingDialog from "../LoadingDialog";
 
 // Images
-import MusicCampaignIcon from "../../assets/music-campaign.png";
 import CommentIcon from "../../assets/comment.png";
 import EtherIcon from "../../assets/ether.png";
 
@@ -36,7 +35,6 @@ const CampaignDetails = ({ campaign, handleClick = () => { } }) => {
             {
                 <video
                     src={videoUrl}
-                    alt={MusicCampaignIcon}
                     className="w-full rounded-xl"
                     style={{ backgroundColor: 'transparent' }}
                     controls
