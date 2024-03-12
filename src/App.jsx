@@ -66,7 +66,7 @@ const App = () => {
     <HashRouter>
       <Navigation show={isConnected && chain?.id !== 1} />
 
-      {openDialog && <WelcomeDialog onClick={handleClose} />}
+      {isConnected && openDialog && <WelcomeDialog onClick={handleClose} />}
 
       <Routes>
         {isConnected && chain?.id !== 1 ? (
