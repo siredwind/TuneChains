@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useAccount, useNetwork } from 'wagmi';
@@ -8,6 +8,7 @@ import CreateCampaign from './components/CreateCampaign';
 import Home from './components/Home';
 import LandingPage from './components/LandingPage';
 import Navigation from './components/Navigation';
+import WelcomeDialog from './components/WelcomeDialog';
 
 // Store Actions
 import {
@@ -24,8 +25,11 @@ const App = () => {
   const { isConnected } = useAccount();
   const { chain } = useNetwork();
 
+  const [openDialog, setOpenDialog] = useState(false);
+
   useEffect(() => {
     const loadBlockchainData = async () => {
+      setOpenDialog(true);
       if (isConnected && chain?.id !== 1) {
         const provider = loadProvider(dispatch);
         const chainId = await loadNetwork(provider, dispatch);
@@ -54,9 +58,15 @@ const App = () => {
     };
   }, [isConnected, chain?.id, dispatch]);
 
+  const handleClose = () => {
+    setOpenDialog(false);
+  };
+
   return (
     <HashRouter>
       <Navigation show={isConnected && chain?.id !== 1} />
+
+      {openDialog && <WelcomeDialog onClick={handleClose} />}
 
       <Routes>
         {isConnected && chain?.id !== 1 ? (

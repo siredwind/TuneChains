@@ -11,7 +11,7 @@ export const selectCampaigns = state => state.mc.campaigns;
 export const selectSocialLinks = state => state.mc.socialLinks;
 
 export const campaignSelector = createSelector(selectCampaigns, (campaigns) => {
-    if (!campaigns || campaigns.length === 0) { return };
+    if (!campaigns || campaigns.length === 0) { return []};
 
     const sortedCampaigns = [...campaigns].sort((a, b) => b.id - a.id);
 

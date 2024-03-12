@@ -63,10 +63,15 @@ export const loadAccount = async (dispatch) => {
 // ------------------------------------------------------------------------------
 // LOAD CONTRACTS
 export const loadToken = async (provider, chainId, dispatch) => {
-    const token = new ethers.Contract(config[chainId].token.address, TOKEN_ABI, provider);
+    try {
+        const token = new ethers.Contract(config[chainId].token.address, TOKEN_ABI, provider);
 
-    dispatch(setContracts(token));
-    dispatch(setSymbol(await token.symbol()));
+        dispatch(setContracts(token));
+        dispatch(setSymbol(await token.symbol()));
+    }
+    catch (error) {
+        console.log("[ERROR] loadToken() - ", error);
+    }
 }
 
 export const loadMC = async (provider, chainId, dispatch) => {
@@ -79,46 +84,56 @@ export const loadMC = async (provider, chainId, dispatch) => {
 // ------------------------------------------------------------------------------
 // LOAD BALANCES, CAMPAIGNS, SOCIAL LINKS, CAMPAIGN COUNT & ACTIVE CAMPAIGN COUNT
 export const loadBalance = async (token, account, dispatch) => {
-    const balance = await token.balanceOf(account);
-    dispatch(balanceLoaded(ethers.utils.formatUnits(balance.toString(), 'ether')));
+    try {
+        const balance = await token.balanceOf(account);
+        dispatch(balanceLoaded(ethers.utils.formatUnits(balance.toString(), 'ether')));
 
-    return ethers.utils.formatUnits(balance.toString(), 'ether');
+        return ethers.utils.formatUnits(balance.toString(), 'ether');
+    }
+    catch (error) {
+        console.log("[ERROR] loadBalance() - ", error);
+    }
 }
 
 // ------------------------------------------------------------------------------
 // LOAD CAMPAIGNS, SOCIAL LINKS, CAMPAIGN COUNT & ACTIVE CAMPAIGN COUNT
 export const loadCampaigns = async (mc, dispatch) => {
-    const campaignCount = parseInt(await mc.campaignCount());
-    dispatch(campaignCountLoaded(campaignCount));
+    try {
+        const campaignCount = parseInt(await mc.campaignCount());
+        dispatch(campaignCountLoaded(campaignCount));
 
-    const activeCampaignCount = await mc.activeCampaignCount();
-    dispatch(activeCampaignCountLoaded(activeCampaignCount));
+        const activeCampaignCount = await mc.activeCampaignCount();
+        dispatch(activeCampaignCountLoaded(activeCampaignCount));
 
-    if (campaignCount > 0) {
-        let campaigns = [];
-        for (let id = 1; id <= campaignCount; id++) {
-            const campaignDetail = await mc.getCampaignDetails(id);
-            const campaign = {
-                id: parseInt(campaignDetail[0]._hex, 16),
-                musician: campaignDetail[1],
-                title: campaignDetail[2],
-                description: campaignDetail[3],
-                url: campaignDetail[4],
-                goal: ethers.utils.formatEther(campaignDetail[5]) || 0,
-                raised: ethers.utils.formatEther(campaignDetail[6]) || 0,
-                deadline: new Date((campaignDetail[7]).toString() * 1000).toLocaleString(),
-                closed: campaignDetail[8],
-            };
-            campaigns.push(campaign);
+        if (campaignCount > 0) {
+            let campaigns = [];
+            for (let id = 1; id <= campaignCount; id++) {
+                const campaignDetail = await mc.getCampaignDetails(id);
+                const campaign = {
+                    id: parseInt(campaignDetail[0]._hex, 16),
+                    musician: campaignDetail[1],
+                    title: campaignDetail[2],
+                    description: campaignDetail[3],
+                    url: campaignDetail[4],
+                    goal: ethers.utils.formatEther(campaignDetail[5]) || 0,
+                    raised: ethers.utils.formatEther(campaignDetail[6]) || 0,
+                    deadline: new Date((campaignDetail[7]).toString() * 1000).toLocaleString(),
+                    closed: campaignDetail[8],
+                };
+                campaigns.push(campaign);
+            }
+            dispatch(campaignsLoaded(campaigns));
+
+            let socialLinks = [];
+            for (let id = 1; id <= campaignCount; id++) {
+                const campaignSocialLinks = await mc.getSocialLinks(id);
+                socialLinks.push(campaignSocialLinks);
+            }
+            dispatch(socialLinksLoaded(socialLinks));
         }
-        dispatch(campaignsLoaded(campaigns));
-
-        let socialLinks = [];
-        for (let id = 1; id <= campaignCount; id++) {
-            const campaignSocialLinks = await mc.getSocialLinks(id);
-            socialLinks.push(campaignSocialLinks);
-        }
-        dispatch(socialLinksLoaded(socialLinks));
+    }
+    catch (error) {
+        console.log("[ERROR] loadCampaigns() - ", error);
     }
 }
 

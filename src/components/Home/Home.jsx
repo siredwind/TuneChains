@@ -4,7 +4,6 @@ import React from "react";
 import Container from "../Container";
 import Campaigns from "../Campaigns";
 import FadeIn from "../common/Effects/FadeIn";
-import LoadingDialog from "../LoadingDialog";
 import News from "../News";
 
 // Redux 
@@ -26,10 +25,7 @@ const Home = () => {
       <FadeIn>
         <News activeCampaigns={parseInt(activeCampaignsCount)} />
 
-        {campaignsDetails
-          ? <Campaigns campaignsDetails={campaignsDetails} />
-          : <LoadingDialog text={"Loading data"} />
-        }
+        <Campaigns campaignsDetails={campaignsDetails} />
 
       </FadeIn>
     </Container>
